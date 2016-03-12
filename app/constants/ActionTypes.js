@@ -1,0 +1,12 @@
+export const MIDI_BUTTON_PRESSED = 'MIDI_BUTTON_PRESSED';
+export const BUTTON_CLICKED = 'BUTTON_CLICKED';
+export const TOGGLE_NOTE = 'TOGGLE_NOTE';
+export const NEXT_BEAT = 'NEXT_BEAT';
+export const PLAY_NOTE = 'PLAY_NOTE';
+export const PLAY_SEQUENCE = 'PLAY_SEQUENCE';
+export const STOP_SEQUENCE = 'STOP_SEQUENCE';
+export const REFRESH_LAUNCHPAD = 'REFRESH_LAUNCHPAD';
+export const SELECT_DEVICE = 'SELECT_DEVICE';
+export const SET_DEVICE_LIST = 'SET_DEVICE_LIST';
+export const MIDI_RECEIVED = 'MIDI_RECEIVED';
+export const SEND_MIDI = 'SEND_MIDI';
