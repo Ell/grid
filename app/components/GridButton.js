@@ -1,6 +1,10 @@
 import React from 'react';
 
-const GridButton = ({ note }) => {
+const GridButton = ({ clickHandler, note }) => {
+  const _onClick = () => {
+    clickHandler(note.id);
+  };
+
   let className = 'grid-column';
 
   switch (note.color) {
@@ -11,11 +15,12 @@ const GridButton = ({ note }) => {
       className = `${className} grid-button-disabled`;
   }
 
-  return <div className={className}></div>;
+  return <div className={className} onClick={_onClick}></div>;
 };
 
 export default GridButton;
 
 GridButton.propTypes = {
   note: React.PropTypes.object,
+  clickHandler: React.PropTypes.func,
 };

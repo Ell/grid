@@ -10,3 +10,4 @@ export const SELECT_DEVICE = 'SELECT_DEVICE';
 export const SET_DEVICE_LIST = 'SET_DEVICE_LIST';
 export const MIDI_RECEIVED = 'MIDI_RECEIVED';
 export const SEND_MIDI = 'SEND_MIDI';
+export const SET_SYNTH = 'SET_AUDIO_CONTEXT';

@@ -1,27 +1,24 @@
 import * as types from '../constants/ActionTypes';
+import { gridRows } from '../constants/Grid';
 
 import _ from 'lodash';
 
-const gridRows = [
-  [0, 7],
-  [16, 23],
-  [32, 39],
-  [48, 55],
-  [64, 71],
-  [80, 87],
-  [96, 103],
-  [112, 119],
-];
-
 const gridState = {};
 
-gridRows.forEach((row) => {
-  _.range(row[0], row[1] + 1).forEach((note) => (
-    gridState[note] = { id: note, color: null, enabled: false }
+gridRows.forEach((row, index) => {
+  _.range(row[0], row[1] + 1).forEach((note, column) => (
+    gridState[note] = {
+      id: note,
+      color: null,
+      enabled: false,
+      row: index,
+      column,
+    }
   ));
 });
 
 const initialState = {
+  synth: null,
   launchpad: null,
   devices: [],
   grid: gridState,
@@ -32,11 +29,12 @@ const gridReducer = (state = initialState, action) => {
     case types.TOGGLE_NOTE: {
       const enabled = !state.grid[action.note].enabled;
       const color = enabled ? 'green' : null;
+      const note = state.grid[action.note];
       return {
         ...state,
         grid: {
           ...state.grid,
-          [action.note]: { id: action.note, enabled, color },
+          [action.note]: { ...note, enabled, color },
         },
       };
     }
@@ -50,6 +48,12 @@ const gridReducer = (state = initialState, action) => {
       return {
         ...state,
         devices: action.devices,
+      };
+    }
+    case types.SET_SYNTH: {
+      return {
+        ...state,
+        synth: action.synth,
       };
     }
     default:

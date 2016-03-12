@@ -1,15 +1,17 @@
 import React from 'react';
 
-import {
-  selectDevice,
-} from '../actions/GridActions';
+import { gridRows } from '../constants/Grid';
+import Synth from '../utils/synth';
 
 import GridRow from './GridRow';
 import MidiSelect from '../components/MidiSelect';
 
 class Grid extends React.Component {
   componentDidMount() {
-    const { setDeviceList } = this.props;
+    const { setDeviceList, setSynth } = this.props;
+    const synth = new Synth();
+
+    setSynth(synth);
 
     if (navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess({
@@ -30,11 +32,11 @@ class Grid extends React.Component {
         if (note.enabled) {
           switch (note.color) {
             case 'green': {
-              launchpad.output.send([0x90, noteIndex.toString(16), 0x1C]);
+              launchpad.output.send([0x90, noteIndex.toString(16), 0x3C]);
               break;
             }
             default: {
-              launchpad.output.send([0x90, noteIndex.toString(16), 0x1C]);
+              launchpad.output.send([0x90, noteIndex.toString(16), 0x3C]);
             }
           }
         } else {
@@ -71,24 +73,35 @@ class Grid extends React.Component {
   }
 
   render() {
-    const { devices, selectDevice, grid, dispatch } = this.props;
+    const { devices, selectDevice, grid, onButtonClick } = this.props;
+    const rows = gridRows.map((row) => (
+      <GridRow
+        clickHandler = {onButtonClick}
+        startNote={row[0]}
+        endNote={row[1]}
+        grid={grid}
+        key={row[0]}
+      />
+    ));
 
     return (
       <div>
         <MidiSelect devices={devices} callback={selectDevice} />
         <div id="music-grid">
-          <GridRow startNote={0} endNote={7} grid={grid} />
-          <GridRow startNote={16} endNote={23} grid={grid} />
-          <GridRow startNote={32} endNote={39} grid={grid} />
-          <GridRow startNote={48} endNote={55} grid={grid} />
-          <GridRow startNote={64} endNote={71} grid={grid} />
-          <GridRow startNote={80} endNote={87} grid={grid} />
-          <GridRow startNote={96} endNote={103} grid={grid} />
-          <GridRow startNote={112} endNote={119} grid={grid} />
+          {rows}
         </div>
       </div>
     );
   }
 }
+
+Grid.propTypes = {
+  setDeviceList: React.PropTypes.func,
+  devices: React.PropTypes.array,
+  grid: React.PropTypes.object,
+  selectDevice: React.PropTypes.func,
+  onButtonClick: React.PropTypes.func,
+  setSynth: React.PropTypes.func,
+};
 
 export default Grid;

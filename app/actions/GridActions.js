@@ -1,17 +1,33 @@
 import * as types from '../constants/ActionTypes';
 
 export const nextBeat = () => ({ type: types.NEXT_BEAT });
-export const playNote = (note) => ({ type: types.PLAY_NOTE, note });
 export const playSequence = () => ({ type: types.PLAY_SEQUENCE });
 export const stopSequence = () => ({ type: types.STOP_SEQUENCE });
 export const toggleNote = (note) => ({ type: types.TOGGLE_NOTE, note });
 export const setDeviceList = (devices) => ({ type: types.SET_DEVICE_LIST, devices });
+export const setSynth = (synth) => ({ type: types.SET_SYNTH, synth });
 export const sendMidiMessage = (message) => ({ type: types.SEND_MIDI, message });
+
+export function startSequencer() {
+  return (dispatch, getState) => {
+    const { audioContext, launchpad } = getState();
+  };
+}
+
+export function stopSequencer() {}
+
+export function playNote() {
+  return (dispatch, getState) => {
+    const { synth } = getState();
+    synth.playNote('C4');
+  };
+}
 
 export function receiveMidiMessage(message) {
   return (dispatch) => {
     if (message.data[0] === 144 && message.data[2] === 127) {
       dispatch(toggleNote(message.data[1]));
+      dispatch(playNote());
     }
   };
 }
