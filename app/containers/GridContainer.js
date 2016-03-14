@@ -3,7 +3,6 @@ import {
   toggleNote,
   selectDevice,
   setDeviceList,
-  setSynth,
   startSequencer,
   sendMidiMessage,
   setVolume,
@@ -12,6 +11,7 @@ import {
   setSustain,
   setRelease,
   setWaveType,
+  setColor,
 } from '../actions/GridActions';
 
 import Grid from '../components/Grid';
@@ -62,6 +62,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setWaveType: (type) => {
     dispatch(setWaveType(type));
+  },
+  setColor: (note, color) => {
+    dispatch(setColor(note, color));
   },
 });
 

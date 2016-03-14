@@ -22,7 +22,7 @@ class Grid extends React.Component {
   }
 
   componentWillUpdate(props) {
-    const { grid, launchpad, sendMidiMessage, params } = props;
+    const { grid, launchpad, sendMidiMessage, params, setColor } = props;
 
     const synth = synthInstance.instance;
 
@@ -45,15 +45,7 @@ class Grid extends React.Component {
         const note = grid[noteIndex];
 
         if (note.enabled) {
-          switch (note.color) {
-            case 'green': {
-              sendMidiMessage([0x90, noteIndex.toString(16), 0x3C]);
-              break;
-            }
-            default: {
-              sendMidiMessage([0x90, noteIndex.toString(16), 0x3C]);
-            }
-          }
+          setColor(noteIndex, note.color);
         } else {
           sendMidiMessage([0x90, noteIndex.toString(16), 0x0C]);
         }

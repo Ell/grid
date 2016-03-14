@@ -12,7 +12,7 @@ export const SELECT_DEVICE = 'SELECT_DEVICE';
 export const MIDI_RECEIVED = 'MIDI_RECEIVED';
 export const SEND_MIDI = 'SEND_MIDI';
 
-
+export const SET_COLOR = 'SET_COLOR';
 export const SET_DEVICE_LIST = 'SET_DEVICE_LIST';
 export const SET_SYNTH = 'SET_AUDIO_CONTEXT';
 export const SET_NEXT_COLUMN = 'SET_NEXT_COLUMN';

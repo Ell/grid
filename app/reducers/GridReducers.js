@@ -47,6 +47,15 @@ const gridReducer = (state = initialState, action) => {
         },
       };
     }
+    case types.SET_COLOR: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          [action.note]: { ...state.grid[action.note], color: action.color },
+        },
+      };
+    }
     case types.SELECT_DEVICE: {
       return {
         ...state,
