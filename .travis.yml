@@ -4,5 +4,6 @@ node_js:
 install:
   - npm install
   - npm install -g webpack
+  - webpack webpack.config.js
 after_success:
   - bash deploy.sh
