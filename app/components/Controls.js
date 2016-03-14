@@ -36,7 +36,7 @@ const Controls = ({
           start={-50}
           end={50}
           step={1}
-         />
+        />
       </div>
       <div className="field">
         <label>Attack ({params.attack})</label>

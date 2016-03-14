@@ -1,9 +1,6 @@
 export const MIDI_BUTTON_PRESSED = 'MIDI_BUTTON_PRESSED';
 
-export const BUTTON_CLICKED = 'BUTTON_CLICKED';
-
 export const TOGGLE_NOTE = 'TOGGLE_NOTE';
-export const NEXT_BEAT = 'NEXT_BEAT';
 export const PLAY_NOTE = 'PLAY_NOTE';
 
 export const REFRESH_LAUNCHPAD = 'REFRESH_LAUNCHPAD';

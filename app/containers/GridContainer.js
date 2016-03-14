@@ -12,15 +12,18 @@ import {
   setRelease,
   setWaveType,
   setColor,
+  setupSynth,
 } from '../actions/GridActions';
+
+import launchpadInstance from '../utils/launchpad';
 
 import Grid from '../components/Grid';
 
 const mapStateToProps = (state) => (
   {
     grid: state.grid,
-    devices: state.devices,
-    launchpad: state.launchpad,
+    launchpad: launchpadInstance.device,
+    devices: launchpadInstance.devices,
     params: state.params,
   }
 );
@@ -65,6 +68,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setColor: (note, color) => {
     dispatch(setColor(note, color));
+  },
+  setupSynth: () => {
+    dispatch(setupSynth());
   },
 });
 

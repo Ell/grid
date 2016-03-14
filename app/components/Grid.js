@@ -1,70 +1,25 @@
 import React from 'react';
 
 import { gridRows } from '../constants/Grid';
-import synthInstance from '../utils/synth';
+import { Launchpad } from '../utils/launchpad';
 
 import GridRow from './GridRow';
 import Controls from './Controls';
 
 class Grid extends React.Component {
   componentDidMount() {
-    const { setDeviceList, startSequencer } = this.props;
+    const { setDeviceList, startSequencer, setupSynth } = this.props;
 
     if (navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess({
         sysex: false,
       }).then((midiAccess) => {
-        setDeviceList(this.getLaunchPads(midiAccess));
+        setDeviceList(Launchpad.getLaunchPads(midiAccess));
       });
     }
 
+    setupSynth();
     startSequencer();
-  }
-
-  componentWillUpdate(props) {
-    const { params } = props;
-
-    const synth = synthInstance.instance;
-
-    synth.set({
-      oscillator: {
-        type: params.waveType,
-      },
-      envelope: {
-        attack: params.attack,
-        decay: params.decay,
-        sustain: params.sustain,
-        release: params.release,
-      },
-    });
-
-    synth.volume.value = params.volume;
-  }
-
-  getLaunchPads = (midiAccess) => {
-    const inputs = midiAccess.inputs.values();
-    const outputs = midiAccess.outputs.values();
-
-    const devices = [];
-
-    const inputDevices = [...inputs]
-      .filter((input) => input.name.split(' ')[0] === 'Launchpad');
-    const outputDevices = [...outputs]
-      .filter((output) => output.name.split(' ')[0] === 'Launchpad');
-
-    inputDevices.forEach((input) => {
-      outputDevices.forEach((output) => {
-        if (input.name === output.name) {
-          devices.push({
-            name: output.name,
-            input,
-            output,
-          });
-        }
-      });
-    });
-
-    return devices;
   }
 
   render() {
@@ -129,6 +84,7 @@ Grid.propTypes = {
   setSustain: React.PropTypes.func,
   setRelease: React.PropTypes.func,
   setWaveType: React.PropTypes.func,
+  setupSynth: React.PropTypes.func,
 };
 
 export default Grid;

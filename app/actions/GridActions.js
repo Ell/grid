@@ -2,8 +2,9 @@ import * as types from '../constants/ActionTypes';
 
 import Tone from 'tone';
 import synthInstance from '../utils/synth';
+import launchpadInstance from '../utils/launchpad';
 
-export const setDeviceList = (devices) => ({ type: types.SET_DEVICE_LIST, devices });
+// export const setDeviceList = (devices) => ({ type: types.SET_DEVICE_LIST, devices });
 export const setAttack = (attack) => ({ type: types.SET_ATTACK, attack });
 export const setDecay = (decay) => ({ type: types.SET_DECAY, decay });
 export const setSustain = (sustain) => ({ type: types.SET_SUSTAIN, sustain });
@@ -11,9 +12,28 @@ export const setRelease = (release) => ({ type: types.SET_RELEASE, release });
 export const setWaveType = (waveType) => ({ type: types.SET_WAVE_TYPE, waveType });
 export const setVolume = (volume) => ({ type: types.SET_VOLUME, volume });
 
-export function sendMidiMessage(message) {
+export function setupSynth() {
   return (dispatch, getState) => {
-    const { launchpad } = getState();
+    const { params } = getState();
+    const synth = synthInstance.instance;
+    synth.set({
+      envelope: {
+        attack: params.attack,
+        decay: params.decay,
+        sustain: params.sustain,
+        release: params.release,
+      },
+      oscillator: {
+        type: params.waveType,
+      },
+    });
+    synth.volume.value = params.volume;
+  };
+}
+
+export function sendMidiMessage(message) {
+  return () => {
+    const launchpad = launchpadInstance.device;
     if (launchpad) {
       launchpad.output.send(message);
     }
@@ -128,9 +148,15 @@ export function receiveMidiMessage(message) {
   };
 }
 
+export function setDeviceList(devices) {
+  return () => {
+    launchpadInstance.devices = devices;
+  };
+}
+
 export function selectDevice(deviceIndex) {
-  return (dispatch, getState) => {
-    const { devices } = getState();
+  return (dispatch) => {
+    const devices = launchpadInstance.devices;
     const device = devices[deviceIndex];
 
     // Reset launchpad and set to XY mode
@@ -139,10 +165,7 @@ export function selectDevice(deviceIndex) {
 
     device.input.onmidimessage = (message) => dispatch(receiveMidiMessage(message));
 
-    dispatch({
-      type: types.SELECT_DEVICE,
-      device,
-    });
+    launchpadInstance.device = device;
 
     dispatch(syncLaunchpad());
   };

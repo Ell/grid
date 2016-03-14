@@ -1,9 +1,11 @@
 import * as types from '../constants/ActionTypes';
 import { gridRows, notes } from '../constants/Grid';
+import synthInstance from '../utils/synth';
 
 import _ from 'lodash';
 
 const gridState = {};
+const synth = synthInstance.instance;
 
 gridRows.forEach((row, index) => {
   _.range(row[0], row[1] + 1).forEach((note, column) => {
@@ -28,8 +30,6 @@ const initialState = {
     waveType: 'triangle',
     volume: -25,
   },
-  launchpad: null,
-  devices: [],
   grid: gridState,
 };
 
@@ -75,6 +75,7 @@ const gridReducer = (state = initialState, action) => {
       };
     }
     case types.SET_ATTACK: {
+      synth.set({ envelope: { attack: action.attack } });
       return {
         ...state,
         params: {
@@ -84,6 +85,7 @@ const gridReducer = (state = initialState, action) => {
       };
     }
     case types.SET_DECAY: {
+      synth.set({ envelope: { sustain: action.decay } });
       return {
         ...state,
         params: {
@@ -93,6 +95,7 @@ const gridReducer = (state = initialState, action) => {
       };
     }
     case types.SET_SUSTAIN: {
+      synth.set({ envelope: { sustain: action.sustain } });
       return {
         ...state,
         params: {
@@ -102,6 +105,7 @@ const gridReducer = (state = initialState, action) => {
       };
     }
     case types.SET_RELEASE: {
+      synth.set({ envelope: { release: action.release } });
       return {
         ...state,
         params: {
@@ -111,6 +115,7 @@ const gridReducer = (state = initialState, action) => {
       };
     }
     case types.SET_WAVE_TYPE: {
+      synth.set({ oscillator: { type: action.waveType } });
       return {
         ...state,
         params: {
@@ -120,6 +125,7 @@ const gridReducer = (state = initialState, action) => {
       };
     }
     case types.SET_VOLUME: {
+      synth.volume.value = action.volume;
       return {
         ...state,
         params: {
