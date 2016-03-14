@@ -1,15 +1,17 @@
 import React from 'react';
 
 import { gridRows } from '../constants/Grid';
-import Synth from '../utils/synth';
+import Tone from 'tone';
 
 import GridRow from './GridRow';
-import MidiSelect from '../components/MidiSelect';
+import Controls from './Controls';
 
 class Grid extends React.Component {
   componentDidMount() {
-    const { setDeviceList, setSynth } = this.props;
-    const synth = new Synth();
+    const { setDeviceList, setSynth, startSequencer } = this.props;
+
+    const chorus = new Tone.Chorus(4, 2.5, 0.5).toMaster();
+    const synth = new Tone.PolySynth(8, Tone.SimpleSynth).connect(chorus);
 
     setSynth(synth);
 
@@ -20,10 +22,26 @@ class Grid extends React.Component {
         setDeviceList(this.getLaunchPads(midiAccess));
       });
     }
+
+    startSequencer();
   }
 
   componentWillUpdate(props) {
-    const { grid, launchpad } = props;
+    const { grid, launchpad, sendMidiMessage, params, synth } = props;
+
+    synth.set({
+      oscillator: {
+        type: params.waveType,
+      },
+      envelope: {
+        attack: params.attack,
+        decay: params.decay,
+        sustain: params.sustain,
+        release: params.release,
+      },
+    });
+
+    synth.volume.value = params.volume;
 
     if (launchpad) {
       Object.keys(grid).forEach((noteIndex) => {
@@ -32,15 +50,15 @@ class Grid extends React.Component {
         if (note.enabled) {
           switch (note.color) {
             case 'green': {
-              launchpad.output.send([0x90, noteIndex.toString(16), 0x3C]);
+              sendMidiMessage([0x90, noteIndex.toString(16), 0x3C]);
               break;
             }
             default: {
-              launchpad.output.send([0x90, noteIndex.toString(16), 0x3C]);
+              sendMidiMessage([0x90, noteIndex.toString(16), 0x3C]);
             }
           }
         } else {
-          launchpad.output.send([0x90, noteIndex.toString(16), 0x0C]);
+          sendMidiMessage([0x90, noteIndex.toString(16), 0x0C]);
         }
       });
     }
@@ -73,7 +91,20 @@ class Grid extends React.Component {
   }
 
   render() {
-    const { devices, selectDevice, grid, onButtonClick } = this.props;
+    const {
+      devices,
+      selectDevice,
+      grid,
+      onButtonClick,
+      params,
+      setVolume,
+      setAttack,
+      setDecay,
+      setSustain,
+      setRelease,
+      setWaveType,
+    } = this.props;
+
     const rows = gridRows.map((row) => (
       <GridRow
         clickHandler = {onButtonClick}
@@ -85,8 +116,20 @@ class Grid extends React.Component {
     ));
 
     return (
-      <div>
-        <MidiSelect devices={devices} callback={selectDevice} />
+      <div id="grid-container" className="ui container grid">
+        <div id="controls" className="five wide column">
+          <Controls
+            selectDevice={selectDevice}
+            devices={devices}
+            params={params}
+            setVolume={setVolume}
+            setAttack={setAttack}
+            setDecay={setDecay}
+            setSustain={setSustain}
+            setRelease={setRelease}
+            setWaveType={setWaveType}
+          />
+        </div>
         <div id="music-grid">
           {rows}
         </div>
@@ -102,6 +145,14 @@ Grid.propTypes = {
   selectDevice: React.PropTypes.func,
   onButtonClick: React.PropTypes.func,
   setSynth: React.PropTypes.func,
+  startSequencer: React.PropTypes.func,
+  params: React.PropTypes.object,
+  setVolume: React.PropTypes.func,
+  setAttack: React.PropTypes.func,
+  setDecay: React.PropTypes.func,
+  setSustain: React.PropTypes.func,
+  setRelease: React.PropTypes.func,
+  setWaveType: React.PropTypes.func,
 };
 
 export default Grid;

@@ -8,3 +8,5 @@ export const gridRows = [
   [96, 103],
   [112, 119],
 ];
+
+export const notes = ['C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5'];

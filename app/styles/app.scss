@@ -1,20 +1,34 @@
 body {
-  background-color: #d3d3d3;
+  background-color: white;
+}
+
+#controls {
+  margin-top: 50px;
 }
 
 #music-grid {
-  margin: 0 auto;
-  width: 600px;
   margin-top: 25px;
+  margin-left: 25px;
+  padding-top: 30px;
+  padding-left: 10px;
+  padding-right: 35px;
+  padding-bottom: 10px;
+  background-color: #333333;
+  border-radius: 10px;
+
+  border: 1px solid;
 }
 
 .grid-row {
   margin: 0 auto;
 }
 
+.range {
+  width: 100%;
+}
+
 .grid-column {
   border-radius: 5px;
-  background-color: white;
   box-shadow: 0px 5px 1px rgba(26, 26, 26, 0.2);
   display: inline-block;
   margin-left: 20px;
@@ -24,9 +38,9 @@ body {
 }
 
 .grid-button-enabled {
-  background-color: rgba(124, 252, 0, 0.6);
+  background-color: rgba(127, 255, 0, 0.9);
 }
 
 .grid-button-disabled {
-  background-color: white;
+  background-color: #e6e6e6;
 }

@@ -39,6 +39,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "adsr": "^1.0.1",
     "es6-promise": "^3.1.2",
     "es6-shim": "^0.35.0",
     "jquery": "^2.2.1",
@@ -52,6 +53,7 @@
     "redux-devtools": "^3.1.1",
     "redux-thunk": "^2.0.1",
     "semantic-ui-css": "^2.1.8",
+    "tone": "^0.6.1",
     "whatwg-fetch": "^0.11.0"
   }
 }
