@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - "5.8"
+install:
+  - npm install
+  - npm install -g webpack
+after_success:
+  - bash deploy.sh

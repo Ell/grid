@@ -13,6 +13,10 @@ import {
   setWaveType,
   setColor,
   setupSynth,
+  resetGrid,
+  resetParams,
+  hydrateGrid,
+  generateGridUrl,
 } from '../actions/GridActions';
 
 import launchpadInstance from '../utils/launchpad';
@@ -25,6 +29,7 @@ const mapStateToProps = (state) => (
     launchpad: launchpadInstance.device,
     devices: launchpadInstance.devices,
     params: state.params,
+    gridUrl: state.gridUrl,
   }
 );
 
@@ -71,6 +76,19 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setupSynth: () => {
     dispatch(setupSynth());
+  },
+  resetGrid: () => {
+    dispatch(resetGrid());
+  },
+  resetParams: () => {
+    dispatch(resetParams());
+    dispatch(setupSynth());
+  },
+  hydrateGrid: (data) => {
+    dispatch(hydrateGrid(data));
+  },
+  generateGridUrl: () => {
+    dispatch(generateGridUrl());
   },
 });
 

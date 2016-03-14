@@ -4,13 +4,13 @@ import Tone from 'tone';
 import synthInstance from '../utils/synth';
 import launchpadInstance from '../utils/launchpad';
 
-// export const setDeviceList = (devices) => ({ type: types.SET_DEVICE_LIST, devices });
 export const setAttack = (attack) => ({ type: types.SET_ATTACK, attack });
 export const setDecay = (decay) => ({ type: types.SET_DECAY, decay });
 export const setSustain = (sustain) => ({ type: types.SET_SUSTAIN, sustain });
 export const setRelease = (release) => ({ type: types.SET_RELEASE, release });
 export const setWaveType = (waveType) => ({ type: types.SET_WAVE_TYPE, waveType });
 export const setVolume = (volume) => ({ type: types.SET_VOLUME, volume });
+export const resetParams = () => ({ type: types.RESET_PARAMS });
 
 export function setupSynth() {
   return (dispatch, getState) => {
@@ -67,6 +67,15 @@ export function syncLaunchpad() {
   return (dispatch, getState) => {
     const { grid } = getState();
     Object.keys(grid).forEach((note) => dispatch(setColor(note, grid[note].color)));
+  };
+}
+
+export function resetGrid() {
+  return (dispatch) => {
+    dispatch({
+      type: types.RESET_GRID,
+    });
+    dispatch(syncLaunchpad());
   };
 }
 
@@ -168,5 +177,58 @@ export function selectDevice(deviceIndex) {
     launchpadInstance.device = device;
 
     dispatch(syncLaunchpad());
+  };
+}
+
+export function generateGridUrl() {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    const enabledItems = Object.keys(state.grid).filter((note) => (
+      state.grid[note].enabled
+    ));
+
+    const exportedState = window.btoa(JSON.stringify({
+      enabledItems,
+      params: state.params,
+    }));
+
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    const url = `${baseUrl}?state=${exportedState}`;
+    const pleaseDontStealThisKey = 'AIzaSyBFPpxSkhmrUFjbkccaXTZsgAUnhKVbDeQ';
+
+    fetch(`https://www.googleapis.com/urlshortener/v1/url?key=${pleaseDontStealThisKey}`, {
+      method: 'post',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        longUrl: url,
+      }),
+    })
+    .then((response) => response.json())
+    .then((json) => (
+      dispatch({
+        type: types.SET_GRID_URL,
+        url: json.id,
+      })
+    ))
+    .catch((err) => console.log(err));
+  };
+}
+
+export function hydrateGrid(data) {
+  return (dispatch) => {
+    const importedState = JSON.parse(window.atob(data));
+    const { params, enabledItems } = importedState;
+
+    enabledItems.forEach((item) => dispatch(toggleNote(item)));
+    dispatch(setAttack(params.attack));
+    dispatch(setDecay(params.decay));
+    dispatch(setSustain(params.sustain));
+    dispatch(setRelease(params.release));
+    dispatch(setVolume(params.volume));
+    dispatch(setWaveType(params.waveType));
   };
 }

@@ -1,4 +1,6 @@
 import React from 'react';
+import queryString from 'query-string';
+import _ from 'lodash';
 
 import { gridRows } from '../constants/Grid';
 import { Launchpad } from '../utils/launchpad';
@@ -8,7 +10,7 @@ import Controls from './Controls';
 
 class Grid extends React.Component {
   componentDidMount() {
-    const { setDeviceList, startSequencer, setupSynth } = this.props;
+    const { setDeviceList, startSequencer, setupSynth, hydrateGrid } = this.props;
 
     if (navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess({
@@ -20,6 +22,13 @@ class Grid extends React.Component {
 
     setupSynth();
     startSequencer();
+
+    if (window.location.search && window.location.search !== undefined) {
+      const query = queryString.parse(window.location.search);
+      if (_.has(query, 'state')) {
+        hydrateGrid(query.state);
+      }
+    }
   }
 
   render() {
@@ -35,6 +44,10 @@ class Grid extends React.Component {
       setSustain,
       setRelease,
       setWaveType,
+      resetGrid,
+      resetParams,
+      generateGridUrl,
+      gridUrl,
     } = this.props;
 
     const rows = gridRows.map((row) => (
@@ -60,6 +73,10 @@ class Grid extends React.Component {
             setSustain={setSustain}
             setRelease={setRelease}
             setWaveType={setWaveType}
+            resetGrid={resetGrid}
+            resetParams={resetParams}
+            generateGridUrl={generateGridUrl}
+            gridUrl={gridUrl}
           />
         </div>
         <div id="music-grid">
@@ -85,6 +102,11 @@ Grid.propTypes = {
   setRelease: React.PropTypes.func,
   setWaveType: React.PropTypes.func,
   setupSynth: React.PropTypes.func,
+  resetParams: React.PropTypes.func,
+  resetGrid: React.PropTypes.func,
+  hydrateGrid: React.PropTypes.func,
+  generateGridUrl: React.PropTypes.func,
+  gridUrl: React.PropTypes.string,
 };
 
 export default Grid;

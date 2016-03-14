@@ -35,6 +35,18 @@ const initialState = {
 
 const gridReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.RESET_GRID: {
+      return {
+        ...state,
+        grid: initialState.grid,
+      };
+    }
+    case types.RESET_PARAMS: {
+      return {
+        ...state,
+        params: initialState.params,
+      };
+    }
     case types.TOGGLE_NOTE: {
       const enabled = !state.grid[action.note].enabled;
       const color = enabled ? 'green' : null;
@@ -132,6 +144,12 @@ const gridReducer = (state = initialState, action) => {
           ...state.params,
           volume: action.volume,
         },
+      };
+    }
+    case types.SET_GRID_URL: {
+      return {
+        ...state,
+        gridUrl: action.url,
       };
     }
     default:

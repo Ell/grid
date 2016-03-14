@@ -19,3 +19,9 @@ export const SET_SUSTAIN = 'SET_SUSTAIN';
 export const SET_RELEASE = 'SET_RELEASE';
 export const SET_WAVE_TYPE = 'SET_WAVE_TYPE';
 export const SET_VOLUME = 'SET_VOLUME';
+export const SET_GRID_URL = 'SET_GRID_URL';
+
+export const HYDRATE_STATE = 'HYDRATE_STATE';
+
+export const RESET_GRID = 'RESET_GRID';
+export const RESET_PARAMS = 'RESET_PARAMS';
