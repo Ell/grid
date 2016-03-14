@@ -28,7 +28,6 @@ const initialState = {
     waveType: 'triangle',
     volume: -25,
   },
-  synth: null,
   launchpad: null,
   devices: [],
   grid: gridState,
@@ -58,12 +57,6 @@ const gridReducer = (state = initialState, action) => {
       return {
         ...state,
         devices: action.devices,
-      };
-    }
-    case types.SET_SYNTH: {
-      return {
-        ...state,
-        synth: action.synth,
       };
     }
     case types.SET_NEXT_COLUMN: {

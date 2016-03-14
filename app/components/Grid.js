@@ -1,19 +1,14 @@
 import React from 'react';
 
 import { gridRows } from '../constants/Grid';
-import Tone from 'tone';
+import synthInstance from '../utils/synth';
 
 import GridRow from './GridRow';
 import Controls from './Controls';
 
 class Grid extends React.Component {
   componentDidMount() {
-    const { setDeviceList, setSynth, startSequencer } = this.props;
-
-    const chorus = new Tone.Chorus(4, 2.5, 0.5).toMaster();
-    const synth = new Tone.PolySynth(8, Tone.SimpleSynth).connect(chorus);
-
-    setSynth(synth);
+    const { setDeviceList, startSequencer } = this.props;
 
     if (navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess({
@@ -27,7 +22,9 @@ class Grid extends React.Component {
   }
 
   componentWillUpdate(props) {
-    const { grid, launchpad, sendMidiMessage, params, synth } = props;
+    const { grid, launchpad, sendMidiMessage, params } = props;
+
+    const synth = synthInstance.instance;
 
     synth.set({
       oscillator: {
@@ -144,7 +141,6 @@ Grid.propTypes = {
   grid: React.PropTypes.object,
   selectDevice: React.PropTypes.func,
   onButtonClick: React.PropTypes.func,
-  setSynth: React.PropTypes.func,
   startSequencer: React.PropTypes.func,
   params: React.PropTypes.object,
   setVolume: React.PropTypes.func,

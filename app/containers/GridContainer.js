@@ -22,7 +22,6 @@ const mapStateToProps = (state) => (
     devices: state.devices,
     launchpad: state.launchpad,
     params: state.params,
-    synth: state.synth,
   }
 );
 
@@ -39,9 +38,6 @@ const mapDispatchToProps = (dispatch) => ({
   selectDevice: (event) => {
     const deviceIndex = event.target.value;
     dispatch(selectDevice(deviceIndex));
-  },
-  setSynth: (synth) => {
-    dispatch(setSynth(synth));
   },
   startSequencer: () => {
     dispatch(startSequencer());

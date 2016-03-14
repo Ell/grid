@@ -1,10 +1,10 @@
 import * as types from '../constants/ActionTypes';
 
 import Tone from 'tone';
+import synthInstance from '../utils/synth';
 
 export const toggleNote = (note) => ({ type: types.TOGGLE_NOTE, note });
 export const setDeviceList = (devices) => ({ type: types.SET_DEVICE_LIST, devices });
-export const setSynth = (synth) => ({ type: types.SET_SYNTH, synth });
 export const setAttack = (attack) => ({ type: types.SET_ATTACK, attack });
 export const setDecay = (decay) => ({ type: types.SET_DECAY, decay });
 export const setSustain = (sustain) => ({ type: types.SET_SUSTAIN, sustain });
@@ -29,8 +29,8 @@ export function tick() {
 }
 
 export function playNotes(notes) {
-  return (dispatch, getState) => {
-    const { synth } = getState();
+  return () => {
+    const synth = synthInstance.instance;
     synth.triggerAttackRelease(notes, '8n');
   };
 }
