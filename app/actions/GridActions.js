@@ -3,7 +3,6 @@ import * as types from '../constants/ActionTypes';
 import Tone from 'tone';
 import synthInstance from '../utils/synth';
 
-export const toggleNote = (note) => ({ type: types.TOGGLE_NOTE, note });
 export const setDeviceList = (devices) => ({ type: types.SET_DEVICE_LIST, devices });
 export const setAttack = (attack) => ({ type: types.SET_ATTACK, attack });
 export const setDecay = (decay) => ({ type: types.SET_DECAY, decay });
@@ -41,6 +40,24 @@ export function setColor(note, color) {
       note,
       color,
     });
+  };
+}
+
+export function syncLaunchpad() {
+  return (dispatch, getState) => {
+    const { grid } = getState();
+    Object.keys(grid).forEach((note) => dispatch(setColor(note, grid[note].color)));
+  };
+}
+
+export function toggleNote(note) {
+  return (dispatch) => {
+    dispatch({
+      type: types.TOGGLE_NOTE,
+      note,
+    });
+
+    dispatch(syncLaunchpad());
   };
 }
 
@@ -111,8 +128,6 @@ export function receiveMidiMessage(message) {
   };
 }
 
-
-
 export function selectDevice(deviceIndex) {
   return (dispatch, getState) => {
     const { devices } = getState();
@@ -128,5 +143,7 @@ export function selectDevice(deviceIndex) {
       type: types.SELECT_DEVICE,
       device,
     });
+
+    dispatch(syncLaunchpad());
   };
 }

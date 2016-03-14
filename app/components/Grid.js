@@ -22,7 +22,7 @@ class Grid extends React.Component {
   }
 
   componentWillUpdate(props) {
-    const { grid, launchpad, sendMidiMessage, params, setColor } = props;
+    const { params } = props;
 
     const synth = synthInstance.instance;
 
@@ -39,18 +39,6 @@ class Grid extends React.Component {
     });
 
     synth.volume.value = params.volume;
-
-    if (launchpad) {
-      Object.keys(grid).forEach((noteIndex) => {
-        const note = grid[noteIndex];
-
-        if (note.enabled) {
-          setColor(noteIndex, note.color);
-        } else {
-          sendMidiMessage([0x90, noteIndex.toString(16), 0x0C]);
-        }
-      });
-    }
   }
 
   getLaunchPads = (midiAccess) => {
