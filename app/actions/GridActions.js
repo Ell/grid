@@ -193,7 +193,8 @@ export function generateGridUrl() {
       params: state.params,
     }));
 
-    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    const loc = window.location;
+    const baseUrl = `${loc.protocol}//${loc.host}/${loc.pathname}`;
     const url = `${baseUrl}?state=${exportedState}`;
     const pleaseDontStealThisKey = 'AIzaSyBFPpxSkhmrUFjbkccaXTZsgAUnhKVbDeQ';
 
