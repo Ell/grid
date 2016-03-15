@@ -64,5 +64,10 @@ module.exports = {
       }
     ]),
     devFlagPlugin,
-  ]
+  ],
+  node: {
+    fs: 'empty',
+    tls: 'empty',
+    net: 'empty',
+  },
 };
