@@ -1,8 +1,10 @@
 import * as types from '../constants/ActionTypes';
 
 import Tone from 'tone';
+
 import synthInstance from '../utils/synth';
 import launchpadInstance from '../utils/launchpad';
+import { scales } from '../constants/Grid';
 
 export const setAttack = (attack) => ({ type: types.SET_ATTACK, attack });
 export const setDecay = (decay) => ({ type: types.SET_DECAY, decay });
@@ -11,6 +13,7 @@ export const setRelease = (release) => ({ type: types.SET_RELEASE, release });
 export const setWaveType = (waveType) => ({ type: types.SET_WAVE_TYPE, waveType });
 export const setVolume = (volume) => ({ type: types.SET_VOLUME, volume });
 export const resetParams = () => ({ type: types.RESET_PARAMS });
+export const setScale = (scale) => ({ type: types.SET_SCALE, scale });
 
 export function setupSynth() {
   return (dispatch, getState) => {
@@ -120,8 +123,8 @@ export function tick() {
 
 export function playNotes(noteIndexes) {
   return (dispatch, getState) => {
-    const { grid } = getState();
-    const notes = noteIndexes.map((noteIndex) => grid[noteIndex].note);
+    const { grid, scale } = getState();
+    const notes = noteIndexes.map((noteIndex) => scale.notes[grid[noteIndex].row]);
     const synth = synthInstance.instance;
 
     synth.triggerAttackRelease(notes, '8n');
@@ -191,6 +194,7 @@ export function generateGridUrl() {
     const exportedState = window.btoa(JSON.stringify({
       enabledItems,
       params: state.params,
+      scale: state.scale.id,
     }));
 
     const loc = window.location;
@@ -206,9 +210,10 @@ export function generateGridUrl() {
 export function hydrateGrid(data) {
   return (dispatch) => {
     const importedState = JSON.parse(window.atob(data));
-    const { params, enabledItems } = importedState;
+    const { params, enabledItems, scale } = importedState;
 
     enabledItems.forEach((item) => dispatch(toggleNote(item)));
+    dispatch(setScale(scales[scale]));
     dispatch(setAttack(params.attack));
     dispatch(setDecay(params.decay));
     dispatch(setSustain(params.sustain));

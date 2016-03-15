@@ -3,6 +3,7 @@ import React from 'react';
 import Range from './Range';
 import WaveSelect from './WaveSelect';
 import MidiSelect from './MidiSelect';
+import ScaleSelect from './ScaleSelect';
 
 const Controls = ({
   params,
@@ -18,6 +19,8 @@ const Controls = ({
   devices,
   generateGridUrl,
   gridUrl,
+  setScale,
+  scale,
 }) => (
     <div id="controls">
       <form className="ui form">
@@ -28,9 +31,13 @@ const Controls = ({
             <MidiSelect devices={devices} callback={selectDevice} />
           </div>
           <div className="field">
-            <label>Waveform Type ({params.waveType})</label>
-            <WaveSelect callback={setWaveType} />
+            <label>Waveform Type</label>
+            <WaveSelect waveForm={params.waveType} callback={setWaveType} />
           </div>
+        </div>
+        <div className="field">
+          <label>Scale</label>
+          <ScaleSelect scale={scale} callback={setScale} />
         </div>
         <div className="field">
           <label>Gain ({params.volume})</label>
@@ -86,7 +93,7 @@ const Controls = ({
           <div className="ui large buttons" style={{ width: '50%' }}>
             <button
               type="button"
-              className="fluid ui button"
+              className="fluid ui small button"
               onClick={resetGrid}
             >
               Reset Grid
@@ -94,7 +101,7 @@ const Controls = ({
             <div className="or"></div>
             <button
               type="button"
-              className="fluid ui button"
+              className="fluid ui small button"
               onClick={resetParams}
             >
               Reset Params
@@ -106,7 +113,7 @@ const Controls = ({
           <button
             onClick={generateGridUrl}
             type="button"
-            className="fluid ui large button"
+            className="fluid ui sma;; button"
           >
             Generate Grid URL
           </button>
@@ -133,6 +140,8 @@ Controls.propTypes = {
   devices: React.PropTypes.array,
   gridUrl: React.PropTypes.string,
   generateGridUrl: React.PropTypes.func,
+  scale: React.PropTypes.object,
+  setScale: React.PropTypes.func,
 };
 
 export default Controls;

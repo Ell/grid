@@ -20,6 +20,7 @@ export const SET_RELEASE = 'SET_RELEASE';
 export const SET_WAVE_TYPE = 'SET_WAVE_TYPE';
 export const SET_VOLUME = 'SET_VOLUME';
 export const SET_GRID_URL = 'SET_GRID_URL';
+export const SET_SCALE = 'SET_SCALE';
 
 export const HYDRATE_STATE = 'HYDRATE_STATE';
 

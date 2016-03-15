@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes';
-import { gridRows, notes } from '../constants/Grid';
+import { gridRows, scales } from '../constants/Grid';
 import synthInstance from '../utils/synth';
 
 import _ from 'lodash';
@@ -15,13 +15,13 @@ gridRows.forEach((row, index) => {
       enabled: false,
       row: index,
       column,
-      note: notes[index],
     };
   });
 });
 
 const initialState = {
   currentColumn: 0,
+  scale: scales.cMajorPentatonic,
   params: {
     attack: 0.01,
     decay: 0.1,
@@ -150,6 +150,12 @@ const gridReducer = (state = initialState, action) => {
       return {
         ...state,
         gridUrl: action.url,
+      };
+    }
+    case types.SET_SCALE: {
+      return {
+        ...state,
+        scale: action.scale,
       };
     }
     default:

@@ -17,6 +17,7 @@ import {
   resetParams,
   hydrateGrid,
   generateGridUrl,
+  setScale,
 } from '../actions/GridActions';
 
 import launchpadInstance from '../utils/launchpad';
@@ -30,6 +31,7 @@ const mapStateToProps = (state) => (
     devices: launchpadInstance.devices,
     params: state.params,
     gridUrl: state.gridUrl,
+    scale: state.scale,
   }
 );
 
@@ -90,6 +92,9 @@ const mapDispatchToProps = (dispatch) => ({
   generateGridUrl: () => {
     dispatch(generateGridUrl());
   },
+  setScale: (scale) => {
+    dispatch(setScale(scale));
+  }
 });
 
 const GridContainer = connect(

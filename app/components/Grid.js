@@ -48,6 +48,8 @@ class Grid extends React.Component {
       resetParams,
       generateGridUrl,
       gridUrl,
+      setScale,
+      scale,
     } = this.props;
 
     const rows = gridRows.map((row) => (
@@ -77,6 +79,8 @@ class Grid extends React.Component {
             resetParams={resetParams}
             generateGridUrl={generateGridUrl}
             gridUrl={gridUrl}
+            scale={scale}
+            setScale={setScale}
           />
         </div>
         <div id="music-grid">
@@ -107,6 +111,7 @@ Grid.propTypes = {
   hydrateGrid: React.PropTypes.func,
   generateGridUrl: React.PropTypes.func,
   gridUrl: React.PropTypes.string,
+  scale: React.PropTypes.object,
 };
 
 export default Grid;
