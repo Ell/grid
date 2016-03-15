@@ -194,7 +194,7 @@ export function generateGridUrl() {
     }));
 
     const loc = window.location;
-    const baseUrl = `${loc.protocol}//${loc.host}/${loc.pathname}`;
+    const baseUrl = `${loc.protocol}//${loc.host}${loc.pathname}`;
     const url = `${baseUrl}?state=${exportedState}`;
     const pleaseDontStealThisKey = 'AIzaSyBFPpxSkhmrUFjbkccaXTZsgAUnhKVbDeQ';
 
