@@ -196,26 +196,10 @@ export function generateGridUrl() {
     const loc = window.location;
     const baseUrl = `${loc.protocol}//${loc.host}${loc.pathname}`;
     const url = `${baseUrl}?state=${exportedState}`;
-    const pleaseDontStealThisKey = 'AIzaSyBFPpxSkhmrUFjbkccaXTZsgAUnhKVbDeQ';
-
-    fetch(`https://www.googleapis.com/urlshortener/v1/url?key=${pleaseDontStealThisKey}`, {
-      method: 'post',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        longUrl: url,
-      }),
-    })
-    .then((response) => response.json())
-    .then((json) => (
-      dispatch({
-        type: types.SET_GRID_URL,
-        url: json.id,
-      })
-    ))
-    .catch((err) => console.log(err));
+    dispatch({
+      type: types.SET_GRID_URL,
+      url,
+    });
   };
 }
 
